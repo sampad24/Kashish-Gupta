@@ -171,7 +171,7 @@ const ProjectsPage = () => {
             </div>
           ) : (
             <div className="text-center">
-              <p className="text-gray-600 dark:text-gray-400 mb-4">No videos found. Add video files to the public/videos folder to see them here!</p>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">No videos found. Add video files to the videos folder to see them here!</p>
               <p className="text-sm text-gray-500 dark:text-gray-500">Supported formats: MP4, WebM, OGG, AVI, MOV</p>
             </div>
           )}

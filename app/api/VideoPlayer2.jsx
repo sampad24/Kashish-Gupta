@@ -5,7 +5,7 @@ const VideoPlayer = () => {
   return (
     <div>
       <video
-        src="/videos/hero-video.mp4"
+        src="/api/video/hero-video.mp4"
         muted
         autoPlay
         loop

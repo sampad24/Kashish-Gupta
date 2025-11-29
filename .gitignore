@@ -46,3 +46,10 @@ videos/*
 !videos/*.js
 !videos/*.ts
 public/_next-video
+
+# next-video
+re-run/*
+!re-run/*.json
+!re-run/*.js
+!re-run/*.ts
+public/_next-video
