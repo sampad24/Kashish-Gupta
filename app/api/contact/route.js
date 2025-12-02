@@ -1,24 +1,38 @@
-import clientPromise from '@/lib/mongodb'
-import { NextResponse } from 'next/server'
+import { NextResponse } from "next/server";
+import clientPromise from "@/lib/mongodb";
 
 export async function POST(request) {
   try {
-    const { name, email,number, message } = await request.json()
+    const body = await request.json();
+    const { name, email, number, message } = body;
 
-    const client = await clientPromise
-    const db = client.db('portfolio') // Replace with your database name if different
+    if (!name || !email || !message) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
+    }
 
-    const result = await db.collection('contacts').insertOne({
+    const client = await clientPromise;
+    const db = client.db("portfolio");
+
+    const result = await db.collection("contacts").insertOne({
       name,
-      number,
       email,
+      number,
       message,
-      created_at: new Date()
-    })
+      created_at: new Date(),
+    });
 
-    return NextResponse.json({ message: 'Contact saved successfully', data: result })
+    return NextResponse.json(
+      { success: true, data: result },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error('Error inserting data:', error)
-    return NextResponse.json({ error: 'Failed to save contact' }, { status: 500 })
+    console.error("Error inserting data:", error);
+    return NextResponse.json(
+      { error: "Failed to save contact" },
+      { status: 500 }
+    );
   }
 }
