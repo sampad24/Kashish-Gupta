@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
+import axios from 'axios'
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -25,21 +26,9 @@ const ContactPage = () => {
     setSubmitMessage('')
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        setSubmitMessage('Message sent successfully!')
-        setFormData({ name: '', number: '', email: '', message: '' })
-      } else {
-        setSubmitMessage(`Failed to send message. Status: ${response.status}`)
-      }
+      const response = await axios.post("/api/contact", formData)
+      setSubmitMessage('Message sent successfully!')
+      setFormData({ name: '', number: '', email: '', message: '' })
     } catch (error) {
       console.error('Error:', error)
       setSubmitMessage('An error occurred. Please try again.')
