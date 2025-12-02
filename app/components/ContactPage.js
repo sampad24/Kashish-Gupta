@@ -33,13 +33,12 @@ const ContactPage = () => {
         body: JSON.stringify(formData),
       })
 
-      const data = await response.json()
-
       if (response.ok) {
+        const data = await response.json()
         setSubmitMessage('Message sent successfully!')
         setFormData({ name: '', number: '', email: '', message: '' })
       } else {
-        setSubmitMessage('Failed to send message. Please try again.')
+        setSubmitMessage(`Failed to send message. Status: ${response.status}`)
       }
     } catch (error) {
       console.error('Error:', error)
@@ -59,7 +58,7 @@ const ContactPage = () => {
             <div className="contact-header">
               <h2 className="contact-title">Contact Me</h2>
               <div className="contact-subtitle">
-                Let's work together on your next project
+                Let&apos;s work together on your next project
               </div>
             </div>
 
