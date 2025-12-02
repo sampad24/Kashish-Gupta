@@ -1,11 +1,12 @@
 "use client"
-import React, { useRef, useState } from 'react';
-
+import React, { useRef, useState, useEffect } from 'react';
 
 const VideoPlayer = () => {
   const videoRef = useRef(null);
-  const [isMuted, setIsMuted] = useState(true);  // default: muted for autoplay
-  const [volume, setVolume] = useState(0.5);  // default: full volume
+  const [isMuted, setIsMuted] = useState(true);
+  const [volume, setVolume] = useState(0.5);
+
+  const scrollTimeoutRef = useRef(null);
 
   const toggleMute = () => {
     if (videoRef.current) {
@@ -22,21 +23,52 @@ const VideoPlayer = () => {
     }
   };
 
+  // 🔥 AUTO-MUTE ON SCROLL + AUTO-UNMUTE AFTER STOP
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!videoRef.current) return;
+
+      // Mute immediately while scrolling
+      videoRef.current.muted = true;
+      setIsMuted(true);
+
+      // Clear previous timeout so unmute does not trigger too early
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+
+      // After scrolling stops (1.5 sec), unmute automatically
+      scrollTimeoutRef.current = setTimeout(() => {
+        videoRef.current.muted = false;
+        setIsMuted(false);
+      }, 1500);  // <-- adjust delay here
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, []);
+  // 🔥 END
+
   return (
-    <div className=''>
+    <div>
       <video
         src="/videos/hero-video.mp4"
-        
         ref={videoRef}
         autoPlay
         loop
         playsInline
         controls={false}
         className="video-background"
-        muted={isMuted}   // controlled by state
+        muted={isMuted}
       />
 
-      <div className="absolute 2xl:bottom-20 2xl:right-10 bottom-10 right-5 lg:bottom-100 xl:bottom-10  flex items-center space-x-4">
+      <div className="volume-btn space-x-4">
         <input
           type="range"
           min="0"
@@ -44,7 +76,6 @@ const VideoPlayer = () => {
           step="0.1"
           value={volume}
           onChange={handleVolumeChange}
-          className="volume-slider"
           disabled={isMuted}
         />
         <button

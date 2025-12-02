@@ -1,4 +1,6 @@
-# TODO: Create Service Page for Portfolio
-
-- [x] Create ServicePage.js component in portfolio/app/components/ with detailed descriptions of VFX services (Compositing, Rotoscoping, Paint Cleanup, Screen Replacement, Chroma Remove, 2D & 3D Tracking, Motion Tracking, FX, 3D Modeling, Light Color & Finishing)
-- [x] Update page.js to import ServicePage and integrate it after SkillPage and before ProjectsPage, including a divider line
+- [ ] Create ProjectsPage component with grid layout for video cards
+- [ ] Add hardcoded list of 9 videos with titles and thumbnail paths
+- [ ] Implement modal for video playback on card click
+- [ ] Add video player component in modal with controls
+- [ ] Style the grid and modal for responsive design
+- [ ] Test the component functionality

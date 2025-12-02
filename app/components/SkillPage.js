@@ -71,6 +71,10 @@ const SkillPage = () => {
                     
                     <span>Light Color & Finishing</span>
                   </li>
+                  <li className="skill-item">
+                    
+                    <span>Ai Video</span>
+                  </li>
                 </ul>
               </div>
             </div>

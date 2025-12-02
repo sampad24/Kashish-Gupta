@@ -1,182 +1,134 @@
 "use client"
-
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const ProjectsPage = () => {
-  const [videos, setVideos] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [selectedVideo, setSelectedVideo] = useState(null)
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  const videos = [
+    { title: 'AI Bollywood Song', file: 'AI Bollywood Song.mp4'},
+    { title: 'AI Cartoon Video', file: 'AI Cartoon Video.mp4'},
+    { title: 'AI God Video', file: 'AI God Video.mp4'},
+    { title: 'Compositing', file: 'Compositing.mp4'},
+    { title: 'Paint & Cleanup', file: 'Paint & Cleanup.mp4'},
+    { title: 'Rotoscoping', file: 'Rotoscoping.mp4', },
+    { title: 'UE Environment', file: 'UE Enviroment.mp4' },
+    { title: 'VFX Showreel', file: 'VFX Showreel.mp4'}
+  ]
 
   useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const response = await fetch('/api/videos')
-        const data = await response.json()
-        setVideos(data.videos)
-      } catch (error) {
-        console.error('Error fetching videos:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchVideos()
+    setIsLoaded(true)
   }, [])
 
-  const VideoPlayer = ({ video }) => {
-    const videoRef = useRef(null)
-    const [isPlaying, setIsPlaying] = useState(false)
-    const [volume, setVolume] = useState(0.2)
-    const [showControls, setShowControls] = useState(false)
-    const [isFullscreen, setIsFullscreen] = useState(false)
-    const controlsTimeoutRef = useRef(null)
+  const openModal = (video) => {
+    setSelectedVideo(video)
+  }
 
-    useEffect(() => {
-      const handleFullscreenChange = () => {
-        setIsFullscreen(!!document.fullscreenElement)
-      }
+  const closeModal = () => {
+    setSelectedVideo(null)
+  }
 
-      const preventContextMenu = (e) => {
-        if (isFullscreen) {
-          e.preventDefault()
-        }
-      }
+  return (
+    <div className='project '>
 
-      document.addEventListener('fullscreenchange', handleFullscreenChange)
-      document.addEventListener('webkitfullscreenchange', handleFullscreenChange)
-      document.addEventListener('mozfullscreenchange', handleFullscreenChange)
-      document.addEventListener('MSFullscreenChange', handleFullscreenChange)
-      document.addEventListener('contextmenu', preventContextMenu)
-
-      return () => {
-        document.removeEventListener('fullscreenchange', handleFullscreenChange)
-        document.removeEventListener('webkitfullscreenchange', handleFullscreenChange)
-        document.removeEventListener('mozfullscreenchange', handleFullscreenChange)
-        document.removeEventListener('MSFullscreenChange', handleFullscreenChange)
-        document.removeEventListener('contextmenu', preventContextMenu)
-      }
-    }, [isFullscreen])
-
-    const togglePlay = () => {
-      if (videoRef.current) {
-        if (isPlaying) {
-          videoRef.current.pause()
-        } else {
-          videoRef.current.play()
-        }
-        setIsPlaying(!isPlaying)
-      }
-      showControlsTemporarily()
-    }
-
-    const handleVolumeChange = (e) => {
-      const newVolume = parseFloat(e.target.value)
-      setVolume(newVolume)
-      if (videoRef.current) {
-        videoRef.current.volume = newVolume
-        videoRef.current.muted = newVolume === 0
-      }
-      showControlsTemporarily()
-    }
-
-    const showControlsTemporarily = () => {
-      setShowControls(true)
-      if (controlsTimeoutRef.current) {
-        clearTimeout(controlsTimeoutRef.current)
-      }
-      controlsTimeoutRef.current = setTimeout(() => {
-        setShowControls(false)
-      }, 3000) // Hide after 3 seconds
-    }
-
-    const enterFullscreen = () => {
-      if (videoRef.current) {
-        if (videoRef.current.requestFullscreen) {
-          videoRef.current.requestFullscreen()
-        } else if (videoRef.current.webkitRequestFullscreen) {
-          videoRef.current.webkitRequestFullscreen()
-        } else if (videoRef.current.msRequestFullscreen) {
-          videoRef.current.msRequestFullscreen()
-        }
-      }
-      showControlsTemporarily()
-    }
-
-    return (
-      <div className=''>
-
-        <div className="relative">
-          <video
-            ref={videoRef}
-            className="w-full h-48 object-cover rounded-lg mb-4 cursor-pointer"
-            preload="metadata"
-            poster={`/thumbnails/${video.replace(/\.[^/.]+$/, ".jpg")}`}
-            onContextMenu={(e) => e.preventDefault()}
-            onClick={togglePlay}
-            muted={volume === 0}
-            controlsList="nodownload"
-          >
-            <source src={`/videos/${video}`} type={`video/${video.split('.').pop()}`} />
-            Your browser does not support the video tag.
-          </video>
-          <div className={`absolute bottom-2 right-2  flex flex-col items-center gap-2 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
-            <div className="flex flex-col items-center gap-1">
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.1"
-                value={volume}
-                onChange={handleVolumeChange}
-                orient="vertical"
-              />
-            </div>
+    <div className="min-h-screen bg-gradient-to-br  text-white relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="relative z-10 p-8">
+        {/* Header Section */}
+        <div className={`text-center mb-16 transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="inline-block mb-6">
+            <h1 className="services-title ">
+              My Showreels
+            </h1>
           </div>
         </div>
-        <h1 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white flex justify-center text-font ">{video.replace(/\.[^/.]+$/, "")}</h1>
-        {!isFullscreen && (
-          <div className='flex justify-center w-full '>
-            <button
-              onClick={enterFullscreen}
-              className="bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded cursor-pointer padd1"
+
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-8xl mx-auto">
+          {videos.map((video, index) => (
+            <div
+              key={index}
+              className={`group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/20 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              style={{ animationDelay: `${index * 0.1}s` }}
+              onClick={() => openModal(video)}
             >
-              View Full Screen
-            </button>
+              {/* Hover Glow Effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
+
+              {/* Image Container */}
+              <div className="relative overflow-hidden">
+                <img
+                  src={`/thumbnails/${video.file.replace('.mp4', '.jpg')}`}
+                  alt={video.title}
+                  className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110"
+                  onError={(e) => { e.target.src = '/thumbnails/default.jpg' }}
+                />
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                {/* Play Button */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+                  <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                    <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M8 5v10l8-5-8-5z"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-6 relative z-10">
+                <h3 className="text-xl flex justify-center h-10 items-center font-bold text-white mb-2 group-hover:text-blue-400 transition-colors duration-300">
+                  {video.title}
+                </h3>
+            
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Video Modal */}
+        {selectedVideo && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={closeModal}>
+            <div
+              className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="p-6 border-b border-white/10">
+                <div className="flex items-center justify-between">
+                  <div className='flex justify-center w-full'>
+                    <h2 className="text-2xl font-bold text-white mb-2">{selectedVideo.title}</h2>
+                    
+                  </div>
+                  <button
+                    onClick={closeModal}
+                    className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors duration-200"
+                  >
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Video Player */}
+              <div className="p-6">
+                <video
+                  src={`/videos/${selectedVideo.file}`}
+                  controls
+                  className="w-full rounded-xl shadow-lg"
+                  autoPlay
+                  poster={`/thumbnails/${selectedVideo.file.replace('.mp4', '.jpg')}`}
+                  onContextMenu={(e) => e.preventDefault()}
+                  controlsList='nodownload'
+                />
+              </div>
+            </div>
           </div>
         )}
       </div>
-    )
-  }
-  return (
-    <div className='project  padd1 skills-wrapper'>
-      {/* Projects Section */}
-      <section id="projects" className="py-20  flex justify-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white fade-in-up project-head"><p className='text-6xl '>My Showreels</p></h2>
-
-          {loading ? (
-            <div className="text-center">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <p className="mt-4 text-gray-600 dark:text-gray-400">Loading videos...</p>
-            </div>
-          ) : videos.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-20">
-              {videos.map((video, index) => (
-                <div key={index} className="bg-gray-100 dark:bg-gray-700 padd1 rounded-lg shadow-md hover-lift fade-in-up">
-                  <VideoPlayer video={video} />
-
-                </div>
-
-              ))}
-
-            </div>
-          ) : (
-            <div className="text-center">
-              <p className="text-gray-600 dark:text-gray-400 mb-4">No videos found. Add video files to the videos folder to see them here!</p>
-              <p className="text-sm text-gray-500 dark:text-gray-500">Supported formats: MP4, WebM, OGG, AVI, MOV</p>
-            </div>
-          )}
-        </div>
-      </section>
+    </div>
     </div>
   )
 }

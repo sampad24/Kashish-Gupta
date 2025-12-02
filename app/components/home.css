@@ -1,0 +1,108 @@
+/* ===== MOBILE VIEW ===== */
+.btn2{
+  visibility: hidden;
+}
+@media (max-width: 575px) {
+  .hero {
+    padding: 50px 0px;
+    height: auto;
+    text-align: left;
+  }
+
+  .hero-content {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: auto;
+  }
+
+  .hero-text {
+    width: 100%;
+    padding: 0 5px;
+  }
+
+  /* Title */
+  .hero-title {
+    font-size: 0.7rem;
+    line-height: 1;
+    text-align: left;
+  }
+
+  .hero-title .text-amber-300 {
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: block;
+    margin-top: 6px;
+  }
+
+  /* Typing text */
+  .hero-subtitle {
+    font-size: 0.7rem;
+    margin-top: 10px;
+    text-align: left;
+  }
+
+  /* DESCRIPTION – 3 LINES ONLY */
+  .hero-description {
+    display:-webkit-box;
+    -webkit-line-clamp: 3;      /* Show only 3 lines */
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    line-height: 1;
+    max-width: 100%;
+    font-size: 0.7rem;
+        
+  }
+  .btn2{
+    background-color: #1f2225;
+    visibility: visible;
+    border-radius: 20%;
+    padding: 2%;
+    height:auto;
+    
+    font-size: smaller;
+    display: inline-flex;
+    align-items: center;
+    gap: 5%;
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: all var(--transition-normal);
+    /* cursor: pointer; */
+    border: none;
+    font-size: 0.7rem;
+    
+  }
+  .hero-button{
+    position: relative;
+    display: flex;
+    top: 0%;
+    left: 10px;
+    
+  }
+
+  /* BUTTON AREA (SHOW ONLY BOTTOM ONE) */
+  .imvissable1 {
+    display: none !important;  /* HIDE DESKTOP BUTTONS */
+  }
+
+  .imvissable123 {
+    display: block !important; /* SHOW MOBILE BUTTONS */
+  }
+
+  /* BUTTON STYLE */
+  .hero-actions {
+    display: flex;
+    flex-direction: row;      /* Stack buttons */
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .hero-actions .btn {
+    width: 80%;
+    padding: 12px 0;
+    font-size: 1rem;
+    text-align: center;
+  }
+}

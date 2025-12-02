@@ -1,0 +1,102 @@
+/* Background */
+.service-container {
+  width: 100%;
+  min-height: 100vh;
+  background: #0d0d12;
+  padding: 60px 5%;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  padding-left: 20%;
+  padding-right: 20%;
+}
+
+/* Header */
+.service-header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.service-header h1 {
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.service-header p {
+  color: #b0b0b0;
+  margin-top: 10px;
+}
+
+.underline {
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: #007bff;
+  margin: 15px auto;
+  border-radius: 3px;
+}
+
+/* Service Rows */
+.service-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  margin-bottom: 120px;
+}
+
+/* Alternate Layout */
+.normal-row {
+  flex-direction: row;
+}
+.reverse-row {
+  flex-direction: row-reverse;
+}
+
+/* Image */
+.service-img {
+  flex: 1;
+}
+.image-box {
+   width: 100%;
+  border-radius: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.15);  /* Soft border */
+  box-shadow: 0 0 25px rgba(0, 131, 255, 0.25); /* Glow effect */
+  transition: all 0.4s ease-in-out;
+}
+.image-box:hover {
+  transform: scale(1.025);
+  box-shadow: 0 0 35px rgba(0, 131, 255, 0.45);
+}
+
+/* Text Section */
+.service-text {
+  flex: 1;
+}
+.service-text h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.service-text p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #cccccc;
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+  .service-block {
+    flex-direction: column !important;
+    text-align: center;
+  }
+  .service-img,
+  .service-text {
+    width: 100%;
+  }
+}
+@media (max-width: 480px){
+    .service-container{
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+}

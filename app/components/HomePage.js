@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import img1 from "../assets/logo.png"
 import Image from 'next/image'
 import VideoPlayer from "../api/VideoPlayer.jsx"
+import './home.css'
 
 const HomePage = () => {
   const [displayText, setDisplayText] = useState('')
@@ -59,11 +60,11 @@ const HomePage = () => {
     <div className=''>
       <VideoPlayer className=""></VideoPlayer>
       <section id="home" className="hero  ">
-        <div className="hero-content ">
+        <div className="hero-content  ">
           <div className="hero-text  rounded-4xl  ">
             <h1 className="hero-title">
               Hi, I'm
-              <span className='flex justify-center xl:justify-between '><span className="text-amber-300">Kashish Gupta</span></span>
+              <span className='flex justify-start xl:justify-between '><span className="text-amber-300">Kashish Gupta</span></span>
 
             </h1>
             <p className="hero-subtitle">
@@ -73,18 +74,13 @@ const HomePage = () => {
             <p className="hero-description">
               I work on compositing, rotoscoping and paint cleanup, with a focus on natural and neat visual results.
             </p>
-            <div className="hero-actions">
-              <a href=""
-                className="btn btn-secondary" target="_blank">
+          <div className="hero-actions ">
+              <a href="https://drive.google.com/file/d/1AinggrWr51SmPUE4JneJU0SYaFf_Y34L/view"
+                className="btn-secondary" target="_blank">
                 <span>Resume</span>
-                <i className="fa-solid fa-up-right-from-square"></i>
-                <i className="fa-solid fa-file-lines"></i>
-                <i className="fa-solid fa-paperclip"></i>
-                <i className="fas fa-download"></i>
               </a>
-              <a href="" className="btn btn-secondary" title="visit my nexus card?">
+              <a href="/showreel" className=" btn-secondary" title="visit my nexus card?">
                 <span>View My Work</span>
-                <i className="fas fa-id-card"></i>
               </a>
             </div>
           </div>
